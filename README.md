@@ -177,15 +177,6 @@ player being dead too long              player killing
 ```
 
 ---
-
-## 八、下一步建议
-
-想真正改武器数值（伤害/射速/弹匣/后坐力），要动的是 **PFF 数据包**，而不是 exe：
-
-1. **解 PFF 格式**：同目录的 `Pack.exe` 是官方打包器，PFF 是 Novalogic 自有格式；`D:\1aa Study` 下已有 BHD/JO 的 PFF 相关工具（`BHD_dischema`、`BHD_patch`）可复用其格式知识。
-2. **定位武器结构体**：在 PFF 中以 `WeaponNames2`（`0x22D9E2`）为锚点，其前后应是 39 条武器的数值记录；已知字段名 5 个：`clip size` / `attribs` / `scope mag` / `fire delay` / `ammo type`。
-3. **交叉验证**：改完用游戏内 `!Full Ammo` / `showgun` 等自带调试命令验证 HUD 显示是否同步。
-
 ---
 
 ## 附：产物清单
