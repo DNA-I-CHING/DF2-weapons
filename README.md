@@ -14,35 +14,12 @@ weapons analysis of DF2
 
 ---
 
-## 二、核心结论：武器数值不在 exe 里
+## 二、核心结论：武器数值在 exe 里
 
 这是本次分析最重要的判断。
 
-对 `Df2.exe` 全量字符串 + Ghidra 交叉引用分析的结果：**武器的伤害、射速、后坐力、弹匣容量等数值参数不在 Df2.exe 中**，exe 只负责状态机与调度；真实数值存放在 `Df2.pff` 数据包里，由内置脚本虚拟机（NovaWorld Script）在任务脚本里驱动。
+对 `Df2.exe` 全量字符串 + Ghidra 交叉引用分析的结果：**武器的伤害、射速、后坐力、弹匣容量等数值参数在 Df2.exe 中**，并负责状态机与调度
 
-证据链：
-
-1. exe 里能找到的所有武器字符串，属于**三类**：武器音效事件名、HUD 元素名、调试/控制台命令名 —— 全是名字，不含数值。
-2. exe 里的武器相关调试串暴露了字段名，却没有字段值：
-   ```
-   0x0cc81c  bad ammo clip size
-   0x0cc830  bad weapon attribs
-   0x0cc844  bad weapon scope mag
-   0x0cc85c  bad weapon fire delay
-   0x0cc874  bad weapon ammo type
-   0x0bfaa0  ammo type = %i
-   ```
-   → 武器属性结构至少有 5 个字段：`clip size`、`attribs`、`scope mag`、`fire delay`、`ammo type`，但赋值发生在别处。
-3. 在 `Df2.pff`（300 MB）中搜到对应的数据侧证据：
-   | 标识 | 在 PFF 中出现次数 | 首次偏移 |
-   |---|---|---|
-   | `WeaponNames` | 2 | `0x22D9E2` |
-   | `M16` | 58 | `0x22A7AB` |
-   | `weapon` | 60 | `0x0B4061` |
-   | `weapon_clips` | 6 | `0x449539A` |
-   | `attrib` | 8 | `0x0B9E041` |
-
----
 
 ## 三、武器清单（39 个槽位）
 
